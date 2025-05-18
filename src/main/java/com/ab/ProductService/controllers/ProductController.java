@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
-    @Qualifier("Fake")
+    @Qualifier("Original")
     private ProductService productService;
 
     @GetMapping("/")

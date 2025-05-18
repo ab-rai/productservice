@@ -57,7 +57,7 @@ public class FakeStoreProductServiceImpl implements ProductService {
                 .build();
 
         return Product.builder()
-                .id(fakeStoreProductDto.getId())
+//                .id(fakeStoreProductDto.getId())
                 .title(fakeStoreProductDto.getTitle())
                 .description(fakeStoreProductDto.getDescription())
                 .price(fakeStoreProductDto.getPrice())
