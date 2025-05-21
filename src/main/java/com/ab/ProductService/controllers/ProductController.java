@@ -2,11 +2,13 @@ package com.ab.ProductService.controllers;
 
 import com.ab.ProductService.exceptions.ProductNotFoundException;
 import com.ab.ProductService.models.Product;
+import com.ab.ProductService.security.services.AuthenticationService;
 import com.ab.ProductService.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -16,13 +18,20 @@ public class ProductController {
     @Qualifier("Original")
     private ProductService productService;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @GetMapping("/")
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product  getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
+    public Product  getProductById(@RequestHeader("AuthenticationToken") String token,
+                                   @PathVariable("id") Long id) throws ProductNotFoundException, AccessDeniedException {
+        if(!authenticationService.authenticate(token)){
+            throw new AccessDeniedException("You are not authorised");
+        }
         return productService.getProductById(id);
     }
     @PostMapping
